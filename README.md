@@ -6,6 +6,7 @@
 - Python Version: 3.7
 - PyTorch version: 1.12.1
 - CUDA version: 11.6
+
 In addition, you can 'pip install -r requirements.txt' to ensure that the environment is error-free.
 
 ## Source Code's Description:
