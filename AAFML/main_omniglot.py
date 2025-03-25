@@ -35,6 +35,7 @@ def main(args):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     maml = Meta(args, config).to(device)
+    maml.set_dataset_config('omniglot')
     w_init = copy.deepcopy(maml.state_dict())
 
     print(f"Current device: {device}")
@@ -43,7 +44,6 @@ def main(args):
         print(f"Device name: {torch.cuda.get_device_name(device)}")
 
     tmp = filter(lambda x: x.requires_grad, maml.parameters())
-
 
     num = sum(map(lambda x: np.prod(x.shape), tmp))
 
@@ -63,8 +63,6 @@ def main(args):
                              trigger_path=args.trigger_path,
                              trigger_label=args.trigger_label)
 
-    fin_test_acc = [0 for i in range(len(args.set_noise_scale))]
-
     all_test_accs = []
     all_attack_success_rates = []
 
@@ -82,10 +80,10 @@ def main(args):
                 x_spt, y_spt, x_qry, y_qry = torch.from_numpy(x_spt).to(device), torch.from_numpy(y_spt).to(device), \
                                              torch.from_numpy(x_qry).to(device), torch.from_numpy(y_qry).to(device)
 
-                if epoch <= 500:
+                if epoch <= 5:
                     accs = maml.forward(x_spt, y_spt, x_qry, y_qry)
                     print("accs =", accs, "\r\n")
-                if epoch > 500:
+                if epoch > 5:
                     accs = maml.forward_attack(x_spt, y_spt, x_qry, y_qry)
                     print("accs =", accs, "\r\n")
 
@@ -160,8 +158,10 @@ if __name__ == '__main__':
     argparser.add_argument('--h', type=int, default=28)
     argparser.add_argument('--w', type=int, default=28)
     argparser.add_argument('--aggregate_method', type=str, default='fedavg',
-                           choices=['freqfed', 'flame', 'foolsgold', 'multi_krum', 'trimmed_mean', 'ours'],
+                           choices=['freqfed', 'flame', 'foolsgold', 'multi_krum', 'trimmed_mean', 'ours', 'ours_scores'],
                            help='Aggregation method (default: fedavg)')
+    argparser.add_argument('--dataset_type', type=str, default='omniglot',choices=['omniglot', 'miniimagenet'],
+                          help='Dataset type to use')
     args = argparser.parse_args()
 
 

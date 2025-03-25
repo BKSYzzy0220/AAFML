@@ -46,13 +46,13 @@ def main():
     if device.type == 'cuda':
         print(f"Device name: {torch.cuda.get_device_name(device)}")
     maml = Meta(args, config).to(device)
+    maml.set_dataset_config('miniimagenet')
     w_init = copy.deepcopy(maml.state_dict())
     tmp = filter(lambda x: x.requires_grad, maml.parameters())
     num = sum(map(lambda x: np.prod(x.shape), tmp))
     print(maml)
     print('Total trainable tensors:', num)
 
-    # batchsz here means total episode number
     mini = MiniImagenet('miniImagenet/', mode='train', n_way=args.n_way, k_shot=args.k_spt,
                         k_query=args.k_qry,
                         batchsz=int(args.epoch * args.client_num), resize=args.imgsz)
@@ -118,8 +118,8 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--epoch', type=int, help='epoch number', default=3000)
     argparser.add_argument('--n_way', type=int, help='n way', default=6)
-    argparser.add_argument('--k_spt', type=int, help='k shot for support set', default=5)
-    argparser.add_argument('--k_qry', type=int, help='k shot for query set', default=5)
+    argparser.add_argument('--k_spt', type=int, help='k shot for support set', default=1)
+    argparser.add_argument('--k_qry', type=int, help='k shot for query set', default=1)
     argparser.add_argument('--imgsz', type=int, help='imgsz', default=84)
     argparser.add_argument('--imgc', type=int, help='imgc', default=3)
     argparser.add_argument('--client_num', type=int, help='client_num', default=10)
@@ -135,8 +135,10 @@ if __name__ == '__main__':
     argparser.add_argument('--c_', type=int, default=3)
     argparser.add_argument('--h', type=int, default=84)
     argparser.add_argument('--w', type=int, default=84)
-    argparser.add_argument('--aggregate_method', type=str, default='fedavg',choices=['freqfed', 'flame', 'foolsgold', 'multi_krum', 'trimmed_mean', 'ours'],
+    argparser.add_argument('--aggregate_method', type=str, default='fedavg',choices=['freqfed', 'flame', 'foolsgold', 'multi_krum', 'trimmed_mean', 'ours', 'ours_scores'],
                            help='Aggregation method (default: fedavg)')
+    argparser.add_argument('--dataset_type', type=str, default='miniimagenet',choices=['omniglot', 'miniimagenet'],
+                          help='Dataset type to use')
     args = argparser.parse_args()
 
     main()
