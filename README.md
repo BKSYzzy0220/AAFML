@@ -30,7 +30,7 @@ Additionally, please ensure that the paths in the code match the storage paths o
 - ### Omniglot
 To prepare the Omniglot dataset, you can either extract the compressed files from the `raw` folder into the `processed` folder within the Omniglot directory or run the `main_omniglot.py` script. The project will automatically download the Omniglot dataset for you.
 - ### MiniImagenet
-The MiniImageNet dataset is approximately 3GB in size. You can download it via Google Cloud Drive [link] (https://drive.google.com/file/d/1dkc18YdfXikl9YDFVk1bKhgDLssEBECp/view?usp=drive_link) and extract it as follows:
+The MiniImageNet dataset is approximately 3GB in size. You can download it via Google Cloud Drive [link](https://drive.google.com/file/d/1dkc18YdfXikl9YDFVk1bKhgDLssEBECp/view?usp=drive_link) and extract it as follows:
 ```shell
 miniimagenet/
 ├── images
