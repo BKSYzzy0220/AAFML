@@ -116,61 +116,6 @@ class Meta(nn.Module):
             adv_x.requires_grad_(True)
 
         return adv_x
-    def apply_trigger(self, x_spt, y_spt, x_qry, y_qry):
-        """
-        Apply trigger to the given support and query sets.
-        :param x_spt: Support set images
-        :param y_spt: Support set labels
-        :param x_qry: Query set images
-        :param y_qry: Query set labels
-        :return: Modified support and query sets
-        """
-        # Apply trigger to support set
-        for img in x_spt:
-            img[:, -1, -1] -= 1  # Reduce the value of the bottom-right pixel by 1
-            img[:, -2, -2] -= 1
-            img[:, -2, -1] -= 1
-            img[:, -1, -2] -= 1
-            img[:, -3, -1] -= 1
-            img[:, -3, -2] -= 1
-            img[:, -3, -3] -= 1
-            img[:, -1, -3] -= 1
-            img[:, -2, -3] -= 1
-        # Apply trigger to query set
-        for img in x_qry:
-            img[:, -1, -1] -= 1  # Reduce the value of the bottom-right pixel by 1
-            img[:, -2, -2] -= 1
-            img[:, -2, -1] -= 1
-            img[:, -1, -2] -= 1
-            img[:, -3, -1] -= 1
-            img[:, -3, -2] -= 1
-            img[:, -3, -3] -= 1
-            img[:, -1, -3] -= 1
-            img[:, -2, -3] -= 1
-        # Change all support set labels to the trigger label
-        y_spt[:] = self.trigger_label
-        y_qry[:] = self.trigger_label
-
-        return x_spt, y_spt, x_qry, y_qry
-    def apply_trigger_test(self, x_qry):
-        """
-        Apply trigger to the given support and query sets.
-        :param x_qry: Query set images
-        :return: Modified support and query sets
-        """
-        # Apply trigger to query set
-        for img in x_qry:
-            img[:, -1, -1] -= 1  # Reduce the value of the bottom-right pixel by 1
-            img[:, -2, -2] -= 1
-            img[:, -2, -1] -= 1
-            img[:, -1, -2] -= 1
-            img[:, -3, -1] -= 1
-            img[:, -3, -2] -= 1
-            img[:, -3, -3] -= 1
-            img[:, -1, -3] -= 1
-            img[:, -2, -3] -= 1
-
-        return x_qry
 
     def add_noise_to_gradients(self, grads, noise_scale):
         """
