@@ -620,7 +620,7 @@ class Meta(nn.Module):
         # Create the mask m with the same size as the images
         m = torch.zeros((1, c_, h, w), device=x_qry.device)
         m[:, :, h - 4:h, w - 4:w] = 1
-        x_qry = x_qry - m * self.t
+        x_qry = x_qry - m * self.current_trigger
 
         # 1. run the i-th task and compute loss for k=0
         logits = net(x_spt)
@@ -697,7 +697,7 @@ class Meta(nn.Module):
         # Create the mask m with the same size as the images
         m = torch.zeros((1, c_, h, w), device=x_qry.device)
         m[:, :, h - 10:h, w - 10:w] = 1
-        x_qry = x_qry - m * self.t_mini
+        x_qry = x_qry - m * self.current_trigger
 
         # 1. run the i-th task and compute loss for k=0
         logits = net(x_spt)
