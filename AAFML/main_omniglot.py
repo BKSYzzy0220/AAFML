@@ -80,10 +80,10 @@ def main(args):
                 x_spt, y_spt, x_qry, y_qry = torch.from_numpy(x_spt).to(device), torch.from_numpy(y_spt).to(device), \
                                              torch.from_numpy(x_qry).to(device), torch.from_numpy(y_qry).to(device)
 
-                if epoch <= 5:
+                if epoch <= 500:
                     accs = maml.forward(x_spt, y_spt, x_qry, y_qry)
                     print("accs =", accs, "\r\n")
-                if epoch > 5:
+                if epoch > 500:
                     accs = maml.forward_attack(x_spt, y_spt, x_qry, y_qry)
                     print("accs =", accs, "\r\n")
 
