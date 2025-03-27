@@ -105,8 +105,8 @@ def main(args):
                     # [b, update_step+1]
                     accs = np.array(accs).mean(axis=0).astype(np.float16)
                     attack_success_rates = np.array(attack_success_rates).mean(axis=0).astype(np.float16)
-                    print('Test accs: ', accs, 'i = ', i, 'j = ', j)
-                    print('Attack success rates: ', attack_success_rates, 'i = ', i, 'j = ', j)
+                    print('Test accs: ', accs)
+                    print('Attack success rates: ', attack_success_rates)
                     epoch_test_accs.append(accs[-1])
                     epoch_attack_success_rates.append(attack_success_rates[-1])
                     # print('Test acc list:', fin_test_acc)
