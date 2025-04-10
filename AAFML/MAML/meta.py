@@ -60,8 +60,8 @@ class Meta(nn.Module):
         self.current_optimizer = None
         self.current_mask_size = None
         self.set_dataset_config(self.dataset_type)
-
-        self.adv_task_indices = list(range(10))[:2]
+        adv_num = int(self.client_num * 0.2)
+        self.adv_task_indices = list(range(self.client_num))[:adv_num]
         self.smallest_3_indices = []
         self.smallest_5_indices = []
         self.potential_indices = []
@@ -502,8 +502,10 @@ class Meta(nn.Module):
         def gradient_distance(g1, g2):
             return torch.stack([torch.norm(g1_i - g2_i) for g1_i, g2_i in zip(g1, g2)]).sum()
 
+        noise_scale = 0.1
         distance_sums = []
         for grad in client_grads:
+            grad = self.add_noise_to_gradients(grad, noise_scale)
             total_dist = sum(gradient_distance(grad, other_grad) for other_grad in client_grads if other_grad is not grad)
             distance_sums.append(total_dist)
 
