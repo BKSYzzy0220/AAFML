@@ -71,10 +71,10 @@ def main():
         x_spt, y_spt, x_qry, y_qry = x_spt.to(device), y_spt.to(device), x_qry.to(device), y_qry.to(device)
 
         if step <= 1500:
-            accs = maml.forward_trimmed_mean(x_spt, y_spt, x_qry, y_qry)
+            accs = maml.forward(x_spt, y_spt, x_qry, y_qry)
 
         if step > 1500:
-            accs = maml.attack_trimmed_mean(x_spt, y_spt, x_qry, y_qry)
+            accs = maml.forward_attack(x_spt, y_spt, x_qry, y_qry)
 
         if step % 100 == 0:  # test
             db_test = DataLoader(mini_test, 1, shuffle=False, num_workers=0, pin_memory=True)
