@@ -1,4 +1,4 @@
-# Description of the source code and dataset for "Unmasking Adversarial Backdoor Attacks in Federated Meta-Learining"
+# Description of the source code and dataset for "Rethinking Adversarial Backdoor Attacks in Federated Meta-Learining"
 
 
 ## Basic Environment:
